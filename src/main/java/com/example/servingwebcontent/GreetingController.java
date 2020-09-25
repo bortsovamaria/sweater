@@ -22,7 +22,7 @@ public class GreetingController {
 
     @GetMapping
     public String main(Map<String, Object> model) {
-        model.put("some", "hello, letsCode");
+        model.put("some", "hello, letsCode!");
         return "main";
     }
 
