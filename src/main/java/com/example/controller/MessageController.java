@@ -6,6 +6,7 @@ import com.example.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +26,20 @@ public class MessageController {
     }
 
     @GetMapping("/main")
-    public String main(Map<String, Object> model) {
+    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+                       Model model) {
         Iterable<Message> messages = messageRepo.findAll();
-        model.put("messages", messages);
+
+        if(filter != null && !filter.isEmpty()) {
+            //messages = messageRepo.findByTag(filter);
+            messages = messageRepo.findByTagContaining(filter);
+        } else {
+            messages = messageRepo.findAll();
+        }
+
+        model.addAttribute("messages", messages);
+        model.addAttribute("filter", filter);
+
         return "main";
     }
 
@@ -44,18 +56,4 @@ public class MessageController {
         model.put("messages", messages);
         return "main";
     }
-
-    @PostMapping("filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model) {
-        Iterable<Message> messages = null;
-        if(filter != null && !filter.isEmpty()) {
-            //messages = messageRepo.findByTag(filter);
-            messages = messageRepo.findByTagContaining(filter);
-        } else {
-            messages = messageRepo.findAll();
-        }
-        model.put("messages", messages);
-        return "main";
-    }
-
 }
