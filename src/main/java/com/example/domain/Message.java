@@ -8,6 +8,7 @@ public class Message {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Please fill the message")
     private String text;
     private String tag;
 
