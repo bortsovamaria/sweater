@@ -10,6 +10,28 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<#--    <script src="https://www.google.com/recaptcha/api.js" async defer></script>-->
+<#--    async defer-->
+    <script>
+        var _captchaTries = 0;
+        function recaptchaOnload() {
+            _captchaTries++;
+            if (_captchaTries > 9)
+                return;
+            if ($('.g-recaptcha').length > 0) {
+                grecaptcha.render("recaptcha", {
+                    sitekey: '6Lc3xQQaAAAAAKx9yGU9HDIcLxYsTVMmHuDd0Ya1',
+                    callback: function () {
+                        console.log('recaptcha callback');
+                    }
+                });
+                return;
+            }
+            window.setTimeout(recaptchaOnload, 1000);
+        }
+    </script>
+
+    <script src='https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit' async defer></script
 </head>
 <body>
 <#include "navbar.ftl">
